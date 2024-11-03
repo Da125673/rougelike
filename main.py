@@ -1,5 +1,6 @@
 import random  # Import random module for random positions and values
 
+
 # Basic map settings
 WIDTH, HEIGHT = 40, 20  # Set map width and height
 player_x, player_y = WIDTH // 2, HEIGHT // 2  # Initialize player at the map center
