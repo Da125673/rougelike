@@ -30,12 +30,8 @@ player_x, player_y = GRID_WIDTH // 2, GRID_HEIGHT // 2
 player_health = 10
 player_attack = 3
 
-# Make sure player starts on a floor tile
-map_grid[player_y][player_x] = '.'
-
-# Enemy settings
-enemies = []
-num_enemies = 3
+# Room structure
+rooms = []
 
 # Function to create rooms
 def create_room(x, y, w, h):
@@ -43,20 +39,40 @@ def create_room(x, y, w, h):
         for j in range(x, x + w):
             if 0 <= j < GRID_WIDTH and 0 <= i < GRID_HEIGHT:
                 map_grid[i][j] = '.'
+    # Append the room’s center point to the list
+    rooms.append((x + w // 2, y + h // 2))
 
-# Generate a few rooms for the dungeon
+# Function to create corridors between rooms
+def create_corridor(start_x, start_y, end_x, end_y):
+    # Horizontal corridor
+    for x in range(min(start_x, end_x), max(start_x, end_x) + 1):
+        map_grid[start_y][x] = '.'
+    # Vertical corridor
+    for y in range(min(start_y, end_y), max(start_y, end_y) + 1):
+        map_grid[y][end_x] = '.'
+
+# Generate a few rooms and connect them with corridors
 for _ in range(5):
     w, h = random.randint(3, 6), random.randint(3, 6)
     x, y = random.randint(1, GRID_WIDTH - w - 1), random.randint(1, GRID_HEIGHT - h - 1)
     create_room(x, y, w, h)
 
+# Connect each room to the next room with a corridor
+for i in range(1, len(rooms)):
+    create_corridor(rooms[i - 1][0], rooms[i - 1][1], rooms[i][0], rooms[i][1])
+
+# Ensure the player starts on a floor tile in the first room
+player_x, player_y = rooms[0]
+
+# Enemy settings
+enemies = []
+num_enemies = 3
+
 # Spawn enemies randomly in rooms
 for _ in range(num_enemies):
-    while True:
-        enemy_x, enemy_y = random.randint(0, GRID_WIDTH - 1), random.randint(0, GRID_HEIGHT - 1)
-        if map_grid[enemy_y][enemy_x] == '.':
-            enemies.append({"x": enemy_x, "y": enemy_y, "health": 6, "attack": 2})
-            break
+    room = random.choice(rooms)
+    enemy_x, enemy_y = room
+    enemies.append({"x": enemy_x, "y": enemy_y, "health": 6, "attack": 2})
 
 # Main game loop
 running = True
