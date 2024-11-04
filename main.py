@@ -1,4 +1,5 @@
 import random  # Import random module for random positions and values
+import pygame
 
 # Basic map settings
 WIDTH, HEIGHT = 40, 20  # Set map width and height
