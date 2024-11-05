@@ -14,21 +14,23 @@ class Enemy:
         new_y = self.y + direction[1]
 
         # Check if the new position is valid (within bounds and not a wall)
-        if map_grid[new_y][new_x] != '#':
+        if 0 <= new_x < len(map_grid[0]) and 0 <= new_y < len(map_grid) and map_grid[new_y][new_x] != '#':
             self.x = new_x
             self.y = new_y
 
     def move_towards_player(self, player_x, player_y, map_grid):
-        # Move towards the player if within 3 blocks
+        # Move towards the player if within 3 blocks and valid space
         if abs(self.x - player_x) <= 3 and abs(self.y - player_y) <= 3:
-            if self.x < player_x:
+            # Check horizontal movement
+            if self.x < player_x and map_grid[self.y][self.x + 1] != '#':  # Move right
                 self.x += 1
-            elif self.x > player_x:
+            elif self.x > player_x and map_grid[self.y][self.x - 1] != '#':  # Move left
                 self.x -= 1
 
-            if self.y < player_y:
+            # Check vertical movement
+            if self.y < player_y and map_grid[self.y + 1][self.x] != '#':  # Move down
                 self.y += 1
-            elif self.y > player_y:
+            elif self.y > player_y and map_grid[self.y - 1][self.x] != '#':  # Move up
                 self.y -= 1
 
     def take_damage(self, damage):
