@@ -73,9 +73,13 @@ while running:
     if keys[pygame.K_a]: player.move(-1, 0, map_grid)
     if keys[pygame.K_d]: player.move(1, 0, map_grid)
 
-    # Enemy behavior and player-enemy collisions
+    # Enemy behavior
     for enemy in enemies:
-        enemy.move_towards_player(player.x, player.y, map_grid)
+        if abs(enemy.x - player.x) > 3 or abs(enemy.y - player.y) > 3:
+            enemy.move_randomly(map_grid)  # Move randomly if not close
+        else:
+            enemy.move_towards_player(player.x, player.y, map_grid)  # Move towards player if close
+
         if enemy.x == player.x and enemy.y == player.y:
             player.take_damage(enemy.attack)
             enemy.take_damage(player.attack)
