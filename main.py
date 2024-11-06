@@ -60,6 +60,7 @@ for room in rooms[1:]:
         enemies.append(Enemy(enemy_x, enemy_y))
 
 # Main game loop
+# Main game loop
 running = True
 while running:
     for event in pygame.event.get():
@@ -82,8 +83,10 @@ while running:
 
     # Handle player attack with spacebar
     if keys[pygame.K_SPACE] and player.can_attack(current_time):
+        print("Attack initiated!")  # Debugging line
         for enemy in enemies:
             if enemy.x == player.x and enemy.y == player.y:
+                print(f"Attacking enemy at ({enemy.x}, {enemy.y})")  # Debugging line
                 player.attack_enemy(enemy)  # Attack enemy
                 break  # You can only attack one enemy at a time
 
@@ -96,6 +99,7 @@ while running:
 
         # Check if enemy touches the player (enemy attack)
         if enemy.x == player.x and enemy.y == player.y:
+            print(f"Enemy attacks player at ({player.x}, {player.y})")  # Debugging line
             player.take_damage(enemy.attack)  # Player takes damage from enemy
             if player.health <= 0:
                 print("Game Over! You have been defeated.")
