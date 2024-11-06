@@ -6,9 +6,7 @@ from enemy import Enemy
 # Initialize Pygame and define settings
 pygame.init()
 WIDTH, HEIGHT, TILE_SIZE = 800, 600, 20
-BLACK, WHITE = (0, 0, 0), (255, 255, 255)
-WALL_COLOR, FLOOR_COLOR = (100, 100, 100), (200, 200, 200)
-PLAYER_COLOR, ENEMY_COLOR = (0, 255, 0), (255, 0, 0)
+BLACK, WHITE, WALL_COLOR, FLOOR_COLOR, PLAYER_COLOR, ENEMY_COLOR = (0, 0, 0), (255, 255, 255), (100, 100, 100), (200, 200, 200), (0, 255, 0), (255, 0, 0)
 GRID_WIDTH, GRID_HEIGHT = WIDTH // TILE_SIZE, HEIGHT // TILE_SIZE
 
 # Set up display
@@ -77,27 +75,29 @@ while running:
 
     # Enemy behavior
     for enemy in enemies:
-        # Move randomly if far from player, or move towards player if close
         if abs(enemy.x - player.x) > 3 or abs(enemy.y - player.y) > 3:
-            enemy.move_randomly(map_grid)
+            enemy.move_randomly(map_grid)  # Move randomly if not close
         else:
-            enemy.move_towards_player(player.x, player.y, map_grid)
+            enemy.move_towards_player(player.x, player.y, map_grid)  # Move towards player if close
 
-        # Check for collision with player
         if enemy.x == player.x and enemy.y == player.y:
-            player.take_damage(enemy.attack)  # Player takes damage from enemy
-            enemy.take_damage(player.attack)  # Enemy takes damage from player
-            if enemy.health <= 0:  # Remove enemy if dead
-                enemies.remove(enemy)
-            if player.health <= 0:  # End game if player is dead
+            player.take_damage(enemy.attack)
+            enemy.take_damage(player.attack)
+            if enemy.health <= 0:
+                enemies.remove(enemy)  # Remove defeated enemy
+            if player.health <= 0:
                 print("Game Over! You have been defeated.")
                 running = False
 
+    # Check if all enemies are defeated
+    if not enemies:
+        print("You Won! All enemies have been defeated.")
+        running = False
+
     # Rendering code
-    window.fill(BLACK)  # Fill the window with black color
+    window.fill(BLACK)
     for y in range(GRID_HEIGHT):
         for x in range(GRID_WIDTH):
-            # Draw walls and floors
             color = WALL_COLOR if map_grid[y][x] == '#' else FLOOR_COLOR
             pygame.draw.rect(window, color, (x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE))
 
@@ -106,7 +106,7 @@ while running:
     for enemy in enemies:
         pygame.draw.rect(window, ENEMY_COLOR, (enemy.x * TILE_SIZE, enemy.y * TILE_SIZE, TILE_SIZE, TILE_SIZE))
 
-    pygame.display.flip()  # Update the display
-    pygame.time.delay(100)  # Delay to control frame rate
+    pygame.display.flip()
+    pygame.time.delay(100)
 
-pygame.quit()  # Quit Pygame when done
+pygame.quit()
