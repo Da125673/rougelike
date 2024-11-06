@@ -4,8 +4,8 @@ class Enemy:
     def __init__(self, x, y, health=10, attack=2):
         self.x = x
         self.y = y
-        self.health = health
-        self.attack = attack
+        self.health = 10
+        self.attack = 2
 
     def move_randomly(self, map_grid, enemies):
         directions = [(0, -1), (0, 1), (-1, 0), (1, 0)]  # up, down, left, right

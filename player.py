@@ -4,8 +4,8 @@ class Player:
     def __init__(self, x, y, health=50, attack=5):
         self.x = x
         self.y = y
-        self.health = health
-        self.attack = attack
+        self.health = 50
+        self.attack = 2
         self.last_attack_time = 0  # For attack cooldown management
         self.attack_cooldown = 500  # Milliseconds cooldown between attacks
 
