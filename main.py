@@ -77,6 +77,12 @@ while running:
     if keys[pygame.K_d]: 
         player.move(1, 0, map_grid, enemies)   # Pass enemies to check collision
 
+     # Player attack logic (triggered by space bar)
+    if keys[pygame.K_SPACE] and player.can_attack():
+        for enemy in enemies:
+         player.attack_enemy(enemy)
+        player.reset_attack_time()
+
     # Enemy behavior
     for enemy in enemies:
         if abs(enemy.x - player.x) > 3 or abs(enemy.y - player.y) > 3:
