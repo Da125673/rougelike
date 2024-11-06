@@ -84,14 +84,16 @@ while running:
         else:
             enemy.move_towards_player(player.x, player.y, map_grid, enemies)  # Move towards player if close
 
+        # Check if enemy touches the player (enemy attack)
         if enemy.x == player.x and enemy.y == player.y:
-            player.take_damage(enemy.attack)
-            enemy.take_damage(player.attack)
-            if enemy.health <= 0:
-                enemies.remove(enemy)
+            player.take_damage(enemy.attack)  # Player takes damage from enemy
             if player.health <= 0:
                 print("Game Over! You have been defeated.")
                 running = False
+
+        # If an enemy is defeated, remove it
+        if enemy.health <= 0:
+            enemies.remove(enemy)
 
     # Check if all enemies are defeated
     if not enemies:
