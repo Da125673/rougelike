@@ -86,10 +86,10 @@ while running:
         # Check for collision with player
         if enemy.x == player.x and enemy.y == player.y:
             player.take_damage(enemy.attack)  # Player takes damage from enemy
-            enemy.take_damage(player.attack)    # Enemy takes damage from player
-            if enemy.health <= 0:               # Remove enemy if dead
+            enemy.take_damage(player.attack)  # Enemy takes damage from player
+            if enemy.health <= 0:  # Remove enemy if dead
                 enemies.remove(enemy)
-            if player.health <= 0:              # End game if player is dead
+            if player.health <= 0:  # End game if player is dead
                 print("Game Over! You have been defeated.")
                 running = False
 
