@@ -73,6 +73,12 @@ while running:
     if keys[pygame.K_a]: player.move(-1, 0, map_grid)
     if keys[pygame.K_d]: player.move(1, 0, map_grid)
 
+    # Player attack logic (triggered by space bar)
+    if keys[pygame.K_SPACE] and player.can_attack():
+        for enemy in enemies:
+            player.attack_enemy(enemy)
+        player.reset_attack_time()
+
     # Enemy behavior
     for enemy in enemies:
         if abs(enemy.x - player.x) > 3 or abs(enemy.y - player.y) > 3:
@@ -84,14 +90,18 @@ while running:
             player.take_damage(enemy.attack)
             enemy.take_damage(player.attack)
             if enemy.health <= 0:
-                enemies.remove(enemy)  # Remove defeated enemy
+                enemies.remove(enemy)
             if player.health <= 0:
                 print("Game Over! You have been defeated.")
                 running = False
 
-    # Check if all enemies are defeated
-    if not enemies:
-        print("You Won! All enemies have been defeated.")
+    # Check if player or enemies are dead
+    if player.health <= 0:
+        print("Game Over! You have been defeated.")
+        running = False
+
+    if len(enemies) == 0:
+        print("You win! All enemies defeated.")
         running = False
 
     # Rendering code
