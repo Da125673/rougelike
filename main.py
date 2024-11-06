@@ -68,23 +68,21 @@ while running:
 
     # Handle player movement
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_w]: player.move(0, -1, map_grid)
-    if keys[pygame.K_s]: player.move(0, 1, map_grid)
-    if keys[pygame.K_a]: player.move(-1, 0, map_grid)
-    if keys[pygame.K_d]: player.move(1, 0, map_grid)
-
-    # Player attack logic (triggered by space bar)
-    if keys[pygame.K_SPACE] and player.can_attack():
-        for enemy in enemies:
-            player.attack_enemy(enemy)
-        player.reset_attack_time()
+    if keys[pygame.K_w]: 
+        player.move(0, -1, map_grid, enemies)  # Pass enemies to check collision
+    if keys[pygame.K_s]: 
+        player.move(0, 1, map_grid, enemies)   # Pass enemies to check collision
+    if keys[pygame.K_a]: 
+        player.move(-1, 0, map_grid, enemies)  # Pass enemies to check collision
+    if keys[pygame.K_d]: 
+        player.move(1, 0, map_grid, enemies)   # Pass enemies to check collision
 
     # Enemy behavior
     for enemy in enemies:
         if abs(enemy.x - player.x) > 3 or abs(enemy.y - player.y) > 3:
-            enemy.move_randomly(map_grid)  # Move randomly if not close
+            enemy.move_randomly(map_grid, enemies)  # Move randomly if not close
         else:
-            enemy.move_towards_player(player.x, player.y, map_grid)  # Move towards player if close
+            enemy.move_towards_player(player.x, player.y, map_grid, enemies)  # Move towards player if close
 
         if enemy.x == player.x and enemy.y == player.y:
             player.take_damage(enemy.attack)
@@ -95,13 +93,9 @@ while running:
                 print("Game Over! You have been defeated.")
                 running = False
 
-    # Check if player or enemies are dead
-    if player.health <= 0:
-        print("Game Over! You have been defeated.")
-        running = False
-
-    if len(enemies) == 0:
-        print("You win! All enemies defeated.")
+    # Check if all enemies are defeated
+    if not enemies:
+        print("You win! All enemies are defeated.")
         running = False
 
     # Rendering code
