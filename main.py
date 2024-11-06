@@ -77,11 +77,15 @@ while running:
     if keys[pygame.K_d]: 
         player.move(1, 0, map_grid, enemies)   # Pass enemies to check collision
 
-     # Player attack logic (triggered by space bar)
-    if keys[pygame.K_SPACE] and player.can_attack():
+    # Get current time for attack cooldown
+    current_time = pygame.time.get_ticks()
+
+    # Handle player attack with spacebar
+    if keys[pygame.K_SPACE] and player.can_attack(current_time):
         for enemy in enemies:
-         player.attack_enemy(enemy)
-        player.reset_attack_time()
+            if enemy.x == player.x and enemy.y == player.y:
+                player.attack_enemy(enemy)  # Attack enemy
+                break  # You can only attack one enemy at a time
 
     # Enemy behavior
     for enemy in enemies:
