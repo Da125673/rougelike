@@ -1,3 +1,5 @@
+import random  # Import random module
+
 class Enemy:
     def __init__(self, x, y):
         self.x = x
@@ -10,7 +12,7 @@ class Enemy:
         dx, dy = random.choice([(0, 1), (1, 0), (0, -1), (-1, 0)])
         new_x, new_y = self.x + dx, self.y + dy
         if 0 <= new_x < len(map_grid[0]) and 0 <= new_y < len(map_grid):
-            if map_grid[new_y][new_x] != '#':
+            if map_grid[new_y][new_x] != '#':  # Ensure the new spot is not a wall
                 self.x, self.y = new_x, new_y
 
     def move_towards_player(self, player_x, player_y, map_grid):
